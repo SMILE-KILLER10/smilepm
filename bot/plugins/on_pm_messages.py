@@ -23,6 +23,7 @@ from pyrogram.types import (
     Message
 )
 from pyrogram.errors import (
+    PeerIdInvalid,
     UserNotParticipant
 )
 from bot import (
