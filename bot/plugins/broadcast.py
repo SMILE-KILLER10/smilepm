@@ -29,7 +29,7 @@ from bot.sql.users_sql import get_chats
 )
 async def num_start_message(client: Bot, message: Message):
     if not message.reply_to_message:
-        return await message.reply_text("Reply to Message..")
+        return await message.reply_text("Reply to Message..", quote=True)
     reply = message.reply_to_message
     All = get_chats()
     TTL = len(All)
@@ -40,7 +40,7 @@ async def num_start_message(client: Bot, message: Message):
             SUCCESS += 1
         except BaseException as e:
             print(e, chat)
-    MSG = "BroadCast Completed !\n"
+    MSG = "**BroadCast Completed !**\n"
     MSG += f"Succeed : {SUCCESS} Chats!"
     if TTL != SUCCESS:
         MSG += f"\nFailed : {All-SUCCESS} Chats."

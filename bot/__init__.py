@@ -37,6 +37,8 @@ AUTH_CHANNEL = int(get_config(
         should_prompt=True
     )
 )
+# channel/chat to join before contacting
+SUB_CHANNEL = int(get_config("SUB_CHANNEL", "-100"))
 # sqlalchemy Database for the bot to operate
 DB_URI = get_config(
     "DATABASE_URL",

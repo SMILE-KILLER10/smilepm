@@ -22,8 +22,12 @@ from pyrogram import (
 from pyrogram.types import (
     Message
 )
+from pyrogram.errors import (
+    UserNotParticipant
+)
 from bot import (
     AUTH_CHANNEL,
+    SUB_CHANNEL,
     COMMM_AND_PRE_FIX,
     IS_BLACK_LIST_ED_MESSAGE_TEXT,
     START_COMMAND
@@ -38,6 +42,9 @@ from bot.sql.blacklist_sql import (
     check_is_black_list
 )
 
+SENT_ERROR = False
+# way to Send Exception and ignore in cases, it occurs
+# repeatedly
 
 @Bot.on_message(
     ~filters.command(START_COMMAND, COMMM_AND_PRE_FIX) &
@@ -54,7 +61,17 @@ async def on_pm_s(client: Bot, message: Message):
             )
         )
         return
-
+    if SUB_CHANNEL != -100:
+      try:
+        await client.get_chat_member(SUB_CHANNEL, message.from_user.id)
+      except PeerIdInvalid as Exc:
+        if not SENT_ERROR:
+          await Bot.send_message(AUTH_CHANNEL, str(Exc))
+          SENT_ERROR = True
+      except UserNotParticipant:
+          chat = await client.get_chat(SUB_CHANNEL)
+          username = f" [@{chat.username}] " if chat.username else ""
+          return await message.reply_text(f"You Need to Join {chat.title}{username} in order to Use This Bot!.")
     fwded_mesg = None
     if message.edit_date:
         ym = get_chek_dmid(message.message_id)
