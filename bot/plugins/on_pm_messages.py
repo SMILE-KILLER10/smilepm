@@ -23,6 +23,7 @@ from pyrogram.types import (
     Message
 )
 from pyrogram.errors import (
+    PeerIdInvalid,
     UserNotParticipant
 )
 from bot import (
@@ -42,9 +43,6 @@ from bot.sql.blacklist_sql import (
     check_is_black_list
 )
 
-SENT_ERROR = False
-# way to Send Exception and ignore in cases, it occurs
-# repeatedly
 
 @Bot.on_message(
     ~filters.command(START_COMMAND, COMMM_AND_PRE_FIX) &
@@ -64,10 +62,6 @@ async def on_pm_s(client: Bot, message: Message):
     if SUB_CHANNEL != -100:
       try:
         await client.get_chat_member(SUB_CHANNEL, message.from_user.id)
-      except PeerIdInvalid as Exc:
-        if not SENT_ERROR:
-          await Bot.send_message(AUTH_CHANNEL, str(Exc))
-          SENT_ERROR = True
       except UserNotParticipant:
           chat = await client.get_chat(SUB_CHANNEL)
           username = f" [@{chat.username}] " if chat.username else ""
