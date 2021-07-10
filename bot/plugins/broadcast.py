@@ -40,7 +40,7 @@ async def num_start_message(client: Bot, message: Message):
             SUCCESS += 1
         except BaseException as e:
             print(e, chat)
-    MSG = "**BroadCast Completed !**\n"
+    MSG = "🤟BroadCast Completed💘\n"
     MSG += f"Succeed : {SUCCESS} Chats!"
     if TTL != SUCCESS:
         MSG += f"\nFailed : {All-SUCCESS} Chats."
